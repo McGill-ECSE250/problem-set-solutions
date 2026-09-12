@@ -6,14 +6,13 @@ import java.util.Scanner;
  * CHAPTER 6: METHODS
  */
 public class Chapter06 {
-
+    static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_06_08();
+        exercise_06_20();
     }
 
     ///////////////// EXERCISE 6.2 /////////////////
     static void exercise_06_02() {
-        Scanner input = new Scanner(System.in);
         System.out.print("Enter a number: ");
         int n = input.nextInt();
         int sum = sumDigits(n);
@@ -85,12 +84,66 @@ public class Chapter06 {
 
     ///////////////// EXERCISE 6.20 /////////////////
     static void exercise_06_20() {
-
+        System.out.println("String s:");
+        String s = input.next();
+        int result = countLetters(s);
+        System.out.println("Number of letters in string " + s + " : " + result);
     }
+    public static int countLetters(String s) {
+        int numOfLetters = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isLetter(s.charAt(i))) {
+                numOfLetters++;
+            }
+        }
+        return numOfLetters;
+    }
+
+    // FYI: if you made your own isLetter method, a possible custom method would be the following:
+    public boolean isCharacterALetter(char c){
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    }
+    // Although it is much more preferred to use library functions as much as possible
+    // as they are much more tested and proven to work
 
     ///////////////// EXERCISE 6.22 /////////////////
     static void exercise_06_22() {
+        System.out.println("long n:");
+        long n = input.nextLong();
+        double result = sqrtRecursive(n);
+        System.out.println("The approximate square root of " + n + " : " + result);
 
+    }
+
+    private static final double acceptableDelta = 0.0001;
+    private static final double initialGuess = 1;
+    //Algorithm using a loop:
+    public static double sqrt(long n){
+        double lastGuess;
+        double nextGuess = initialGuess;
+        do {
+            lastGuess = nextGuess;
+            nextGuess = (lastGuess + n / lastGuess) / 2;
+        } while (!areAlmostIdentical(lastGuess, nextGuess));
+        return nextGuess;
+    }
+
+
+    //Algorithm using recursive (Chapter 18) for the curious and the final exam practice:
+    public static double sqrtRecursive(long n) {
+        return sqrtRecursive(n, initialGuess);
+    }
+    private static double sqrtRecursive(long n, double lastGuess){
+        double nextGuess = (lastGuess + n / lastGuess) / 2;
+        if (areAlmostIdentical(lastGuess, nextGuess)){
+            return nextGuess;
+        } else {
+            return sqrtRecursive(n, nextGuess);
+        }
+    }
+
+    private static boolean areAlmostIdentical(double a, double b){
+        return Math.abs(a - b) < acceptableDelta;
     }
 
     ///////////////// EXERCISE 6.23 /////////////////
