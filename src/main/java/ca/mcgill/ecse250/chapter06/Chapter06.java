@@ -8,7 +8,8 @@ import java.util.Scanner;
 public class Chapter06 {
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_06_20();
+        exercise_06_26();
+        input.close();
     }
 
     ///////////////// EXERCISE 6.2 /////////////////
@@ -84,7 +85,7 @@ public class Chapter06 {
 
     ///////////////// EXERCISE 6.20 /////////////////
     static void exercise_06_20() {
-        System.out.println("String s:");
+        System.out.print("String s: ");
         String s = input.next();
         int result = countLetters(s);
         System.out.println("Number of letters in string " + s + " : " + result);
@@ -108,7 +109,7 @@ public class Chapter06 {
 
     ///////////////// EXERCISE 6.22 /////////////////
     static void exercise_06_22() {
-        System.out.println("long n:");
+        System.out.print("long n: ");
         long n = input.nextLong();
         double result = sqrtRecursive(n);
         System.out.println("The approximate square root of " + n + " : " + result);
@@ -143,22 +144,94 @@ public class Chapter06 {
     }
 
     private static boolean areAlmostIdentical(double a, double b){
-        return Math.abs(a - b) < acceptableDelta;
+        return abs(a - b) < acceptableDelta;
+    }
+
+    // Equivalent to Math.abs(double n).
+    private static double abs(double n){
+        return (n > 0) ? n : -n;
     }
 
     ///////////////// EXERCISE 6.23 /////////////////
     static void exercise_06_23() {
-
+        System.out.print("Enter the string to find the occurrences on: ");
+        String occurencesString = input.next();
+        System.out.print("\nEnter the character to find the occurrences on: ");
+        char occurrencesChar = input.next().charAt(0);
+        double numOfOccurrencesInString = count(occurencesString, occurrencesChar);
+        System.out.println("The number of " + occurrencesChar + " in "+ occurencesString + " : " + numOfOccurrencesInString);
     }
-
+    public static int count(String str, char a){
+        int numOfOccurences = 0;
+        for (char c : str.toCharArray()) {
+            if (c == a) {
+                numOfOccurences++;
+            }
+        }
+        return numOfOccurences;
+    }
     ///////////////// EXERCISE 6.25 /////////////////
     static void exercise_06_25() {
+        System.out.print("Enter the milliseconds requested: ");
+        long timeInMillisecondsRequested = input.nextLong();
+        System.out.print("\nEnter the character to find the occurrences on: ");
+        char occurrencesChar = input.next().charAt(0);
+        String timeCodeFormatedTime = convertMillis(timeInMillisecondsRequested);
+        System.out.println("The TimeCode formated time of " + timeInMillisecondsRequested + " is : " + timeCodeFormatedTime);
+    }
+    private static final int MILLISECONDS_PER_SECONDS = 1000;
+    private static final byte SECONDS_PER_MIN = 60;
+    private static final byte MIN_PER_HOURS = 60;
 
+    public static String convertMillis(long millis){
+        long seconds = millis / MILLISECONDS_PER_SECONDS;
+        long minutes = seconds / SECONDS_PER_MIN;
+        seconds = seconds % SECONDS_PER_MIN;
+        long hours = minutes / MIN_PER_HOURS;
+        minutes = minutes % MIN_PER_HOURS;
+        //Challenge: do it for DAYS:HOURS:MINUTES:SECONDS. Do you notice a computation pattern?
+        return String.format("%d:%d:%d", hours, minutes, seconds);
     }
 
     ///////////////// EXERCISE 6.26 /////////////////
     static void exercise_06_26() {
+        System.out.print("Enter number of first palindromic prime numbers you would like to see: ");
+        long numRequestedOfPalindromicPrimeNumbers = input.nextLong();
+        String numOfOccurrencesInString = GetPalindromicOrderedPrimesList(numRequestedOfPalindromicPrimeNumbers);
+        System.out.println("The list of the first " + numRequestedOfPalindromicPrimeNumbers + ": " + numOfOccurrencesInString);
+    }
 
+    private static final byte NUMBERS_PER_ROW = 10;
+    static private String GetPalindromicOrderedPrimesList(long requestedNum){
+        int currentNumber = 1;
+        byte numbersCurrentlyPrintedInRow = 0;
+        long numPrinted = 0;
+        StringBuilder primeList = new StringBuilder();
+
+        for (int i = 0; numPrinted != requestedNum; /* this can be left empty! */) {
+            if(isPalindrome(currentNumber)/*From EXERCISE 6.3 */ && isPrime(currentNumber)){
+                if( ++numbersCurrentlyPrintedInRow != NUMBERS_PER_ROW) {
+                    primeList.append(String.format("%d ", currentNumber));
+                } else {
+                    primeList.append(String.format("%d\n", currentNumber));
+                    numbersCurrentlyPrintedInRow = 0;
+                }
+                numPrinted++;
+            }
+            currentNumber++;
+
+        }
+        return primeList.toString();
+    }
+
+    private static boolean isPrime(int n) {
+        int n_sqrt = (int) Math.sqrt(n);
+        for (int i = 2; i <= n_sqrt; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     ///////////////// EXERCISE 6.37 /////////////////
