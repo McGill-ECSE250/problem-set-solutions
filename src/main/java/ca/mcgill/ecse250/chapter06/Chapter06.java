@@ -111,7 +111,7 @@ public class Chapter06 {
     static void exercise_06_22() {
         System.out.print("long n: ");
         long n = input.nextLong();
-        double result = sqrtRecursive(n);
+        double result = sqrt(n);
         System.out.println("The approximate square root of " + n + " : " + result);
 
     }
