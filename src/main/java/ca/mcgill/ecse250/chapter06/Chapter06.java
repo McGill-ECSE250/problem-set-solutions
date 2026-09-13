@@ -249,7 +249,7 @@ public class Chapter06 {
             return PADDING_CHARACTER.repeat(numberOfZeroToBePrefixed)
                     + Integer.toString(number);
         } else {
-            return String.format("%d", numOfDigits);
+            return Integer.toString(number);
         }
     }
 
