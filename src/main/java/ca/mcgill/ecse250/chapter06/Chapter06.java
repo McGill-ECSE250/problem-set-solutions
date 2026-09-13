@@ -6,16 +6,16 @@ import java.util.Scanner;
  * CHAPTER 6: METHODS
  */
 public class Chapter06 {
-    static Scanner input = new Scanner(System.in);
+    static Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
         exercise_06_25();
-        input.close();
+        inputScanner.close();
     }
 
     ///////////////// EXERCISE 6.2 /////////////////
     static void exercise_06_02() {
         System.out.print("Enter a number: ");
-        int n = input.nextInt();
+        int n = inputScanner.nextInt();
         int sum = sumDigits(n);
         System.out.println("The sum of digits for " + n + " is " + sum);
     }
@@ -86,7 +86,7 @@ public class Chapter06 {
     ///////////////// EXERCISE 6.20 /////////////////
     static void exercise_06_20() {
         System.out.print("String s: ");
-        String s = input.next();
+        String s = inputScanner.next();
         int result = countLetters(s);
         System.out.println("Number of letters in string " + s + " : " + result);
     }
@@ -110,7 +110,7 @@ public class Chapter06 {
     ///////////////// EXERCISE 6.22 /////////////////
     static void exercise_06_22() {
         System.out.print("long n: ");
-        long n = input.nextLong();
+        long n = inputScanner.nextLong();
         double result = sqrt(n);
         System.out.println("The approximate square root of " + n + " : " + result);
 
@@ -155,9 +155,9 @@ public class Chapter06 {
     ///////////////// EXERCISE 6.23 /////////////////
     static void exercise_06_23() {
         System.out.print("Enter the string to find the occurrences on: ");
-        String occurencesString = input.next();
+        String occurencesString = inputScanner.next();
         System.out.print("Enter the character to find the occurrences on: ");
-        char occurrencesChar = input.next().charAt(0);
+        char occurrencesChar = inputScanner.next().charAt(0);
         int numOfOccurrencesInString = count(occurencesString, occurrencesChar);
         System.out.println("The number of " + occurrencesChar + " in "+ occurencesString + " : " + numOfOccurrencesInString);
     }
@@ -173,7 +173,7 @@ public class Chapter06 {
     ///////////////// EXERCISE 6.25 /////////////////
     static void exercise_06_25() {
         System.out.print("Enter the milliseconds requested: ");
-        long timeInMillisecondsRequested = input.nextLong();
+        long timeInMillisecondsRequested = inputScanner.nextLong();
         String timeCodeFormatedTime = convertMillis(timeInMillisecondsRequested);
         System.out.println("The TimeCode formated time of " + timeInMillisecondsRequested + " is: " + timeCodeFormatedTime);
     }
@@ -194,7 +194,7 @@ public class Chapter06 {
     ///////////////// EXERCISE 6.26 /////////////////
     static void exercise_06_26() {
         System.out.print("Enter number of first palindromic prime numbers you would like to see: ");
-        long numRequestedOfPalindromicPrimeNumbers = input.nextLong();
+        long numRequestedOfPalindromicPrimeNumbers = inputScanner.nextLong();
         String numOfOccurrencesInString = GetPalindromicOrderedPrimesList(numRequestedOfPalindromicPrimeNumbers);
         System.out.println("The list of the first " + numRequestedOfPalindromicPrimeNumbers + ": \n" + numOfOccurrencesInString);
     }
@@ -236,9 +236,9 @@ public class Chapter06 {
     static void exercise_06_37() {
 
         System.out.print("Enter a number: ");
-        int number = input.nextInt();
+        int number = inputScanner.nextInt();
         System.out.print("Enter its width: ");
-        int width = input.nextInt();
+        int width = inputScanner.nextInt();
         System.out.println("The number " + number + " formatted with " + width + " corresponds to " + format(number, width));
     }
     private static final String PADDING_CHARACTER = "0";
