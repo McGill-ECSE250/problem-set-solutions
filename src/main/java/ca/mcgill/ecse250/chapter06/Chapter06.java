@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class Chapter06 {
     static Scanner input = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_06_26();
+        exercise_06_25();
         input.close();
     }
 
@@ -17,7 +17,7 @@ public class Chapter06 {
         System.out.print("Enter a number: ");
         int n = input.nextInt();
         int sum = sumDigits(n);
-        System.out.println("The sum of digits for " + n + " is " + sum);
+        System.out.print("The sum of digits for " + n + " is " + sum);
     }
 
     public static int sumDigits(int n) {
@@ -88,7 +88,7 @@ public class Chapter06 {
         System.out.print("String s: ");
         String s = input.next();
         int result = countLetters(s);
-        System.out.println("Number of letters in string " + s + " : " + result);
+        System.out.print("Number of letters in string " + s + " : " + result);
     }
     public static int countLetters(String s) {
         int numOfLetters = 0;
@@ -112,7 +112,7 @@ public class Chapter06 {
         System.out.print("long n: ");
         long n = input.nextLong();
         double result = sqrtRecursive(n);
-        System.out.println("The approximate square root of " + n + " : " + result);
+        System.out.print("The approximate square root of " + n + " : " + result);
 
     }
 
@@ -156,10 +156,10 @@ public class Chapter06 {
     static void exercise_06_23() {
         System.out.print("Enter the string to find the occurrences on: ");
         String occurencesString = input.next();
-        System.out.print("\nEnter the character to find the occurrences on: ");
+        System.out.print("Enter the character to find the occurrences on: ");
         char occurrencesChar = input.next().charAt(0);
-        double numOfOccurrencesInString = count(occurencesString, occurrencesChar);
-        System.out.println("The number of " + occurrencesChar + " in "+ occurencesString + " : " + numOfOccurrencesInString);
+        int numOfOccurrencesInString = count(occurencesString, occurrencesChar);
+        System.out.print("The number of " + occurrencesChar + " in "+ occurencesString + " : " + numOfOccurrencesInString);
     }
     public static int count(String str, char a){
         int numOfOccurences = 0;
@@ -174,10 +174,8 @@ public class Chapter06 {
     static void exercise_06_25() {
         System.out.print("Enter the milliseconds requested: ");
         long timeInMillisecondsRequested = input.nextLong();
-        System.out.print("\nEnter the character to find the occurrences on: ");
-        char occurrencesChar = input.next().charAt(0);
         String timeCodeFormatedTime = convertMillis(timeInMillisecondsRequested);
-        System.out.println("The TimeCode formated time of " + timeInMillisecondsRequested + " is : " + timeCodeFormatedTime);
+        System.out.print("The TimeCode formated time of " + timeInMillisecondsRequested + " is: " + timeCodeFormatedTime);
     }
     private static final int MILLISECONDS_PER_SECONDS = 1000;
     private static final byte SECONDS_PER_MIN = 60;
@@ -198,12 +196,12 @@ public class Chapter06 {
         System.out.print("Enter number of first palindromic prime numbers you would like to see: ");
         long numRequestedOfPalindromicPrimeNumbers = input.nextLong();
         String numOfOccurrencesInString = GetPalindromicOrderedPrimesList(numRequestedOfPalindromicPrimeNumbers);
-        System.out.println("The list of the first " + numRequestedOfPalindromicPrimeNumbers + ": " + numOfOccurrencesInString);
+        System.out.print("The list of the first " + numRequestedOfPalindromicPrimeNumbers + ": \n" + numOfOccurrencesInString);
     }
 
     private static final byte NUMBERS_PER_ROW = 10;
     static private String GetPalindromicOrderedPrimesList(long requestedNum){
-        int currentNumber = 1;
+        int currentNumber = 2;
         byte numbersCurrentlyPrintedInRow = 0;
         long numPrinted = 0;
         StringBuilder primeList = new StringBuilder();
@@ -237,6 +235,31 @@ public class Chapter06 {
     ///////////////// EXERCISE 6.37 /////////////////
     static void exercise_06_37() {
 
+        System.out.print("Enter a number: ");
+        int number = input.nextInt();
+        System.out.print("Enter its width: ");
+        int width = input.nextInt();
+        System.out.print("The number " + number + " formatted with " + width + " corresponds to " + format(number, width));
+    }
+    private static final String PADDING_CHARACTER = "0";
+    public static String format(int number, int width){
+        int numOfDigits = numOfDigits(number);
+        if(numOfDigits < width){
+            int numberOfZeroToBePrefixed = width - numOfDigits;
+            return PADDING_CHARACTER.repeat(numberOfZeroToBePrefixed)
+                    + Integer.toString(number);
+        } else {
+            return String.format("%d", numOfDigits);
+        }
+    }
+
+    private static int numOfDigits(int number) {
+        int numOfDigits = 0;
+        while (number >= 1) {
+            number /= 10;
+            numOfDigits++;
+        }
+        return numOfDigits;
     }
 
 }
