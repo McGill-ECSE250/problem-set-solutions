@@ -6,6 +6,7 @@ package ca.mcgill.ecse250.chapter07;
 public class Chapter07 {
 
     public static void main(String[] args) {
+
     }
 
     static void exercise_07_02() {
