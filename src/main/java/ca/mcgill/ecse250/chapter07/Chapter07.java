@@ -1,6 +1,5 @@
 package ca.mcgill.ecse250.chapter07;
 
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -10,7 +9,7 @@ import java.util.Scanner;
 public class Chapter07 {
     private final static Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_07_19();
+        exercise_07_31();
         inputScanner.close();
     }
 
@@ -321,15 +320,106 @@ public class Chapter07 {
         }
         return true;
     }
+    
+    // EXERCISE 7.23 GAME: LOCKER PUZZLE
     static void exercise_07_23() {
-
+        // Initialize boolean array
+        byte numberOfStudents = 100;
+        byte numberOfLockers = 100;
+        boolean[] lockers = new boolean[numberOfLockers]; // all set to false by default
+        setFinalStateOfLockersPuzzleBruteForce(lockers, numberOfStudents);
+        System.out.println("The final locker state is:\n " + Arrays.toString(lockers));
+        // What is the time complexity of my current brute force method?
+        // Do you notice a pattern that could be used to improve the time complexity?
     }
 
-    static void exercise_07_30() {
 
+    private static void setFinalStateOfLockersPuzzleBruteForce(boolean[] lockers, byte numberOfStudents) {
+        for (int i = 1; i <= numberOfStudents; i++) {
+            for (int j = 0; j < lockers.length; j++) {
+                int lockerIndexToMessWith = (((i) * j) - 1);
+                if (0 <= lockerIndexToMessWith && lockerIndexToMessWith < lockers.length) {
+                    lockers[lockerIndexToMessWith] = !lockers[lockerIndexToMessWith];
+                }
+            }
+        }
+    }
+
+
+    // EXERCISE 7.30 PATTERN RECOGNITION: CONSECUTIVE FOUR EQUAL NUMBERS
+    static void exercise_07_30() {
+        System.out.print("Enter the number of values: ");
+        int numOfValues = inputScanner.nextInt();
+        System.out.print("\nEnter the values: ");
+        String numbersSeparatedBySpaceList = inputScanner.nextLine();
+        String[] numbersInString = numbersSeparatedBySpaceList.split(" ");
+        int[] numbers = new int[numOfValues];
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = Integer.parseInt(numbersInString[i]);
+        }
+        System.out.println("This list has" + (isConsecutiveFour(numbers) ? "" : " no ") + "consecutive fours");
+    }
+    private static final byte NUMBER_PATTERN_RECOGNITION_THRESHOLD = 4;
+    public static boolean isConsecutiveFour(int[] values){
+        if(values == null || values.length == 0){
+            return false;
+        }
+        int currentCount = 0;
+        int lastValue = values[0];
+        for (int value : values) {
+            if(value == lastValue){
+                currentCount++;
+                if(currentCount >= NUMBER_PATTERN_RECOGNITION_THRESHOLD){
+                    return true;
+                }
+            } else {
+                lastValue = value;
+                currentCount = 0;
+            }
+        }
+        return false;
     }
 
     static void exercise_07_31() {
+        System.out.print("Enter list1: ");
+        String numbersSeparatedBySpaceList1 = inputScanner.nextLine();
+        System.out.print("Enter list2: ");
+        String numbersSeparatedBySpaceList2 = inputScanner.nextLine();
+        String[] numbersInStringList1 = numbersSeparatedBySpaceList1.split(" ");
+        String[] numbersInStringList2 = numbersSeparatedBySpaceList2.split(" ");
+        int[] list1 = new int[numbersInStringList1.length];
+        int[] list2 = new int[numbersInStringList2.length];
+        for (int i = 0; list1.length > i; i++) {
+            list1[i] = Integer.parseInt(numbersInStringList1[i]);
+        }
+        for (int i = 0; list2.length > i; i++) {
+            list2[i] = Integer.parseInt(numbersInStringList2[i]);
+        }
+        int[] mergedList = merge(list1, list2);
+        System.out.println("The merged list is " + formatArrayToString(mergedList, mergedList.length));
+    }
+    public static int[] merge(int[] list1, int[] list2){
+        int[] returnedList = new int[list1.length + list2.length];
 
+        int list1Index = 0;
+        int list2Index = 0;
+        int returnedListIndex = 0;
+        while(returnedListIndex < returnedList.length ){
+            if(list1Index >= list1.length){
+                returnedList[returnedListIndex] = list2[list2Index];
+                list2Index++;
+            } else if(list2Index >= list2.length){
+                returnedList[returnedListIndex] = list1[list1Index];
+                list1Index++;
+            } else if (list1[list1Index] < list2[list2Index]){
+                returnedList[returnedListIndex] = list1[list1Index];
+                list1Index++;
+            } else {
+                returnedList[returnedListIndex] = list2[list2Index];
+                list2Index++;
+            }
+            returnedListIndex++;
+        }
+        return returnedList;
     }
 }
