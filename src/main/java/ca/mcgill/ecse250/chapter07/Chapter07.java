@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class Chapter07 {
     private final static Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_07_12();
+        exercise_07_19();
         inputScanner.close();
     }
 
@@ -257,17 +257,70 @@ public class Chapter07 {
     }
 
 
-
-
-
+    // EXERCISE 7.14 COMPUTING GCD
+    private static final byte MAX_NUMBERS_7_14 = 5;
     static void exercise_07_14() {
-
+        System.out.print("Enter five numbers separated by space: ");
+        String numbersSeparatedBySpaceList = inputScanner.nextLine();
+        String[] numbersInString = numbersSeparatedBySpaceList.split(" ");
+        int[] numbers = new int[MAX_NUMBERS_7_14];
+        for (int i = 0; i < MAX_NUMBERS_7_14; i++) {
+            numbers[i] = Integer.parseInt(numbersInString[i]);
+        }
+        System.out.println("GCD of the following numbers is " + gcd(numbers));
     }
 
+    public static int gcd(int[] numbers){
+        if(numbers.length == 0){
+            return 0;
+        }
+
+        int gcd = numbers[0];
+        for (int i = 1; i < numbers.length - 1; i++) {
+            gcd = gcdBetween(gcd, numbers[i]);
+        }
+        return gcd;
+    }
+
+    private static int gcdBetween(int a, int b) {
+        while (b != 0) {
+            int tmp = b;
+            b = a % b;
+            a = tmp;
+        }
+        return a;
+    }
+
+    private static int gcdBetweenRec(int a, int b) {
+        return b == 0 ? a : gcdBetweenRec(b, a % b);
+    }
+
+    // Exercise 7.19 SORTED?
     static void exercise_07_19() {
-
+        System.out.print("Enter list: ");
+        String numbersSeparatedBySpaceList = inputScanner.nextLine();
+        String[] numbersInString = numbersSeparatedBySpaceList.split(" ");
+        int[] numbers = new int[Integer.parseInt(numbersInString[0])];
+        for (int i = 1; i < numbers.length + 1 /* could also be i <= numbers.length */; i++) {
+            numbers[i - 1] = Integer.parseInt(numbersInString[i]);
+        }
+        System.out.println("This list is" + (isSorted(numbers) ? " already " : " not ") + "sorted");
     }
 
+    public static boolean isSorted(int[] list){
+        if (list == null || list.length == 0){
+            return true;
+        }
+
+        int prev = list[0];
+        for (int n : list){
+            if (n < prev){
+                return false;
+            }
+            prev = n;
+        }
+        return true;
+    }
     static void exercise_07_23() {
 
     }
