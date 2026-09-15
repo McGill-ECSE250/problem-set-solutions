@@ -1,5 +1,8 @@
 package ca.mcgill.ecse250.chapter08;
 
+/**
+ * CHAPTER 8: MULTIDIMENSIONAL ARRAYS
+ */
 public class Chapter08 {
 
     public static void main(String[] args) {
