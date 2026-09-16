@@ -5,7 +5,7 @@ import java.util.Scanner;
 /**
  * CHAPTER 4: MATHEMATICAL FUNCTIONS, CHARACTERS, AND STRINGS
  */
-public class Chapte04 {
+public class Chapter04 {
 
     public static void main(String[] args) {
         exercise_04_25();

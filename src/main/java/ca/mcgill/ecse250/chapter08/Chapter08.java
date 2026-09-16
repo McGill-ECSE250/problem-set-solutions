@@ -1,9 +1,10 @@
 package ca.mcgill.ecse250.chapter08;
 
-import javax.xml.transform.Result;
-import java.sql.SQLOutput;
-import java.util.Scanner;
 
+import java.util.Scanner;
+/**
+ * CHAPTER 8: MULTIDIMENSIONAL ARRAYS
+ */
 public class Chapter08 {
     private static final Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
