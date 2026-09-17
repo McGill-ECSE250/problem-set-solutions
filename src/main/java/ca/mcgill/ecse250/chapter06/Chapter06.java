@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Chapter06 {
     static Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_06_25();
-        inputScanner.close();
+        exercise_06_26();
+        input.close();
     }
 
     ///////////////// EXERCISE 6.2 /////////////////
@@ -122,13 +122,23 @@ public class Chapter06 {
     public static double sqrt(long n){
         double lastGuess;
         double nextGuess = initialGuess;
-        do {
+        lastGuess = nextGuess;
+        nextGuess = (lastGuess + n / lastGuess) / 2;
+        while (!areAlmostIdentical(lastGuess, nextGuess)) {
             lastGuess = nextGuess;
             nextGuess = (lastGuess + n / lastGuess) / 2;
-        } while (!areAlmostIdentical(lastGuess, nextGuess));
+        }
         return nextGuess;
     }
 
+    private static boolean areAlmostIdentical(double a, double b){
+        return abs(a - b) < acceptableDelta;
+    }
+
+    // Equivalent to Math.abs(double n).
+    private static double abs(double n){
+        return (n > 0) ? n : -n;
+    }
 
     //Algorithm using recursive (Chapter 18) for the curious and the final exam practice:
     public static double sqrtRecursive(long n) {
@@ -143,15 +153,6 @@ public class Chapter06 {
         }
     }
 
-    private static boolean areAlmostIdentical(double a, double b){
-        return abs(a - b) < acceptableDelta;
-    }
-
-    // Equivalent to Math.abs(double n).
-    private static double abs(double n){
-        return (n > 0) ? n : -n;
-    }
-
     ///////////////// EXERCISE 6.23 /////////////////
     static void exercise_06_23() {
         System.out.print("Enter the string to find the occurrences on: ");
@@ -163,8 +164,8 @@ public class Chapter06 {
     }
     public static int count(String str, char a){
         int numOfOccurences = 0;
-        for (char c : str.toCharArray()) {
-            if (c == a) {
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == a) {
                 numOfOccurences++;
             }
         }
@@ -204,14 +205,14 @@ public class Chapter06 {
         int currentNumber = 2;
         byte numbersCurrentlyPrintedInRow = 0;
         long numPrinted = 0;
-        StringBuilder primeList = new StringBuilder();
+        String primeList = "";
 
         for (int i = 0; numPrinted != requestedNum; /* this can be left empty! */) {
             if(isPalindrome(currentNumber)/*From EXERCISE 6.3 */ && isPrime(currentNumber)){
                 if( ++numbersCurrentlyPrintedInRow != NUMBERS_PER_ROW) {
-                    primeList.append(String.format("%d ", currentNumber));
+                    primeList = primeList + String.format("%d ", currentNumber);
                 } else {
-                    primeList.append(String.format("%d\n", currentNumber));
+                    primeList = primeList + String.format("%d\n", currentNumber);
                     numbersCurrentlyPrintedInRow = 0;
                 }
                 numPrinted++;
@@ -219,7 +220,7 @@ public class Chapter06 {
             currentNumber++;
 
         }
-        return primeList.toString();
+        return primeList;
     }
 
     private static boolean isPrime(int n) {
