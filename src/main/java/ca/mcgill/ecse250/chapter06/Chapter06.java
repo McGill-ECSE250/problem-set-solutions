@@ -9,7 +9,7 @@ public class Chapter06 {
     static Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
         exercise_06_26();
-        input.close();
+        inputScanner.close();
     }
 
     ///////////////// EXERCISE 6.2 /////////////////
