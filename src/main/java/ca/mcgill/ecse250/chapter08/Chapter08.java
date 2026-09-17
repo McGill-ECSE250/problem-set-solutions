@@ -2,11 +2,13 @@ package ca.mcgill.ecse250.chapter08;
 
 import javax.xml.transform.Result;
 import java.sql.SQLOutput;
+import java.text.ParseException;
 import java.util.Scanner;
 
 public class Chapter08 {
     private static final Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
+        exercise_08_29();
         inputScanner.close();
     }
 
@@ -89,7 +91,7 @@ public class Chapter08 {
         return formattedString;
     }
 
-    // Assuming that the matrix row x column = matrixString.split(" ").length
+    // Assuming that the matrix row x column <= matrixString.split(" ").length
     private static void parseStringToDoubleMatrix(String matrixString, double[][] matrix) {
         String[] matrix1StringArray = matrixString.split(" ");
         byte index1DArray = 0;
@@ -116,8 +118,26 @@ public class Chapter08 {
         return c;
     }
 
-    static void exercise_08_29() {
 
+    static void exercise_08_29() {
+        System.out.println("Enter matrix1: ");
+        String matrix1String = inputScanner.nextLine();
+        int[][] matrix1 = new int[MATRIX_SIZE][MATRIX_SIZE];
+        System.out.println("Enter matrix2: ");
+        String matrix2String = inputScanner.nextLine();
+        int[][] matrix2 = new int[MATRIX_SIZE][MATRIX_SIZE];
+        parseStringToIntMatrix(matrix1String, matrix1);
+        parseStringToIntMatrix(matrix2String, matrix2);
+        System.out.println("The two arrays are" + (equals(matrix1, matrix2) ? " " : " not ") + "identical");
+    }
+    private static void parseStringToIntMatrix(String matrixString, int[][] matrix) {
+        String[] matrix1StringArray = matrixString.split(" ");
+        byte index1DArray = 0;
+        for(byte i = 0; i < matrix.length; i++) {
+            for(int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = Integer.parseInt(matrix1StringArray[index1DArray++]);
+            }
+        }
     }
     public static boolean equals(int[][] m1, int[][] m2){
         if ((m1 == null) || (m2 == null) || m1.length != m2.length){
