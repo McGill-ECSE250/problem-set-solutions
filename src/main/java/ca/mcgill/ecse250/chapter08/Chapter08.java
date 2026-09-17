@@ -1,10 +1,10 @@
 package ca.mcgill.ecse250.chapter08;
 
-import javax.xml.transform.Result;
-import java.sql.SQLOutput;
-import java.text.ParseException;
-import java.util.Scanner;
 
+import java.util.Scanner;
+/**
+ * CHAPTER 8: MULTIDIMENSIONAL ARRAYS
+ */
 public class Chapter08 {
     private static final Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
@@ -117,7 +117,7 @@ public class Chapter08 {
         return c;
     }
 
-
+    // EXERCISE 8.29: IDENTICAL ARRAYS
     static void exercise_08_29() {
         System.out.println("Enter matrix1: ");
         String matrix1String = inputScanner.nextLine();

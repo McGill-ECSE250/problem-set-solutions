@@ -5,15 +5,11 @@ package ca.mcgill.ecse250.chapter01;
  */
 public class Chapter01 {
     public static void main(String[] args) {
-        int j = 0;
-        for (int i = 0; i < 10; j++) {
-            i++;
-            System.out.println(j);
-        }
+
     }
 
     static void exercise_01_02() {
-        for(int i = 0; i <   5; i++) {
+        for(int i = 0; i < 5; i++) {
             System.out.println("Welcome to Java");
         }
     }
