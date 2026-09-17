@@ -8,7 +8,6 @@ import java.util.Scanner;
 public class Chapter08 {
     private static final Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_08_29();
         inputScanner.close();
     }
 
