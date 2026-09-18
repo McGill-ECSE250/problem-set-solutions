@@ -16,22 +16,40 @@ public class Account {
         this.annualInterestRate = annualInterestRate;
         this.dateCreated = new Date();
     }
-    public Date getDateCreated() {
-        return dateCreated;
+
+    public double getBalance() {
+        return balance;
     }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getAnnualInterestRate() {
+        return annualInterestRate;
+    }
+
+    public void setAnnualInterestRate(double annualInterestRate) {
+        this.annualInterestRate = annualInterestRate;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
     public double getMonthlyInterestRate() {
         return  balance * annualInterestRate / MONTHS_IN_YEAR;
     }
-    public double withdraw(int amount) {
+    public void withdraw(double amount) {
         if (balance < amount) {
-            return 0.0;
+            System.out.println("Insufficient funds :(");
+            return;
         }
         balance -= amount;
-        return amount;
-
     }
-    public void deposit(int amount) {
-        if(amount < 0) {
+    public void deposit(double amount) {
+        if(amount < 0.0) {
+            System.out.println("You cannot deposit negative amount!!");
             return;
         }
         balance += amount;
