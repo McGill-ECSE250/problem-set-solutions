@@ -1,4 +1,4 @@
-package ca.mcgill.ecse250.chapter11;
+package ca.mcgill.ecse250.chapter11.exercise2;
 
 import ca.mcgill.ecse250.chapter10.MyDate;
 
@@ -14,7 +14,7 @@ public class Faculty extends Employee {
 
     @Override
     public String toString() {
-        return super.toString() + "class: " + getClass();
+        return "name: " + super.getName() + " " + getClass();
     }
 
 }

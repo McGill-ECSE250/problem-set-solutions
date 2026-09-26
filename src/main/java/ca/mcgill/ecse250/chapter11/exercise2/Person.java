@@ -1,4 +1,4 @@
-package ca.mcgill.ecse250.chapter11;
+package ca.mcgill.ecse250.chapter11.exercise2;
 
 public class Person {
     private String name;
@@ -15,6 +15,10 @@ public class Person {
 
     @Override
     public String toString() {
-        return "name: " + name;
+        return "name: " + name + " " + getClass();
+    }
+
+    protected String getName() {
+        return name;
     }
 }
