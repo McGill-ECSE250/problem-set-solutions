@@ -54,4 +54,14 @@ public class Account {
         }
         balance += amount;
     }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+                "id=" + id +
+                ", balance=" + balance +
+                ", annualInterestRate=" + annualInterestRate +
+                ", dateCreated=" + dateCreated +
+                '}';
+    }
 }
