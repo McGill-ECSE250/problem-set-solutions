@@ -8,7 +8,6 @@ public class Chapter12 {
 
     private static final Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
-        exercise_12_07();
     }
 
     static void exercise_12_02() {
