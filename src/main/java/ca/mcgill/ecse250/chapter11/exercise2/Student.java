@@ -6,12 +6,9 @@ public class Student extends Person {
     private final ClassStatus status;
 
     public Student(String name, String address, String phoneNumber, String emailAddress, ClassStatus status) {
-        super(name, address, phoneNumber, emailAddress);
+        super(name, address, phoneNumber, emailAddress, "Student");
+
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "name: " + super.getName() + " " + getClass();
-    }
 }

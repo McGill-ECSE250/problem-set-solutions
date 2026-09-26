@@ -7,14 +7,9 @@ public class Faculty extends Employee {
     private String rank;
 
     public Faculty(String name, String address, String phoneNumber, String emailAddress, String officeLocation, double salary, MyDate date, String officeHours, String rank) {
-        super(name, address, phoneNumber, emailAddress, officeLocation, salary, date);
+        super(name, address, phoneNumber, emailAddress, officeLocation, salary, date, "Faculty");
         this.officeHours = officeHours;
         this.rank = rank;
-    }
-
-    @Override
-    public String toString() {
-        return "name: " + super.getName() + " " + getClass();
     }
 
 }

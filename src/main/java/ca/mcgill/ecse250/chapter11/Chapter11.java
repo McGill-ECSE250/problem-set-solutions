@@ -10,12 +10,13 @@ import ca.mcgill.ecse250.chapter11.exercise8.NewAccount;
 public class Chapter11 {
 
     public static void main(String[] args) {
+        exercise_11_02();
     }
 
     static void exercise_11_02() {
         Person p = new Person("Joe", "McGill University", "514-893-2845"/* RANDOM NUMBER */, "joe@gmail.com");
         Student s = new Student("Remi", "8341 boul St-laurent", "514-893-2845", "ybm@email.com", ClassStatus.junior);
-        Faculty f = new Faculty("Professor", "89th Street", "514-514-5144", "professorOfFacultyOfEng@mcgill.ca", "somewhere in campus", 111, new MyDate(2022,11,3), "9am-11am", "Senior");
+        Faculty f = new Faculty("Professor professor", "89th Street", "514-514-5144", "professorOfFacultyOfEng@mcgill.ca", "somewhere in campus", 111, new MyDate(2022,11,3), "9am-11am", "Senior");
         Staff staff = new Staff("Mr Staff", "88th Street","438-438-4388", "staffOfMcgill@mcgill.ca", "88 McConnell", 60, new MyDate(2004, 12, 12), "Security");
         System.out.println(p);
         System.out.println(s);

@@ -8,13 +8,15 @@ public class Employee extends Person {
     private MyDate dateHired;
 
     public Employee(String name, String address, String phoneNumber, String emailAddress, String officeLocation, double salary, MyDate date) {
-        super(name, address, phoneNumber, emailAddress);
+        super(name, address, phoneNumber, emailAddress, "Employee");
         this.officeLocation = officeLocation;
         this.salary = salary;
         this.dateHired = date;
     }
-    @Override
-    public String toString() {
-        return "name: " + super.getName() + " class: " + getClass();
+    protected Employee(String name, String address, String phoneNumber, String emailAddress, String officeLocation, double salary, MyDate date, String classType) {
+        super(name, address, phoneNumber, emailAddress, classType);
+        this.officeLocation = officeLocation;
+        this.salary = salary;
+        this.dateHired = date;
     }
 }

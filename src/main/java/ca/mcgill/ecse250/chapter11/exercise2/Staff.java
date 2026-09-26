@@ -6,12 +6,8 @@ public class Staff extends Employee {
     private String title;
 
     public Staff(String name, String address, String phoneNumber, String emailAddress, String officeLocation, double salary, MyDate date, String title) {
-        super(name, address, phoneNumber, emailAddress, officeLocation, salary, date);
+        super(name, address, phoneNumber, emailAddress, officeLocation, salary, date, "Staff");
         this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "name: " + super.getName() + " " + getClass();
-    }
 }
