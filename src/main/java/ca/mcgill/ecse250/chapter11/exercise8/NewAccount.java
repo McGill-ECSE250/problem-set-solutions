@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class NewAccount extends Account {
     private String name;
-    private ArrayList<Transaction> transactions;
+    private final ArrayList<Transaction> transactions = new ArrayList<>();
     public NewAccount(int id, double balance, double annualInterestRate, String name) {
         super(id, balance, annualInterestRate);
         this.name = name;

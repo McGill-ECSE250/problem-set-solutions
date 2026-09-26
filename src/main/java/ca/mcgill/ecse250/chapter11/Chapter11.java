@@ -10,7 +10,6 @@ import ca.mcgill.ecse250.chapter11.exercise8.NewAccount;
 public class Chapter11 {
 
     public static void main(String[] args) {
-        exercise_11_02();
     }
 
     static void exercise_11_02() {
