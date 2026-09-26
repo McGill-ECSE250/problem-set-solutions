@@ -33,8 +33,8 @@ public class Chapter07 {
             numbers[(numbers.length - 1) - i] = inputScanner.nextInt();
         }
         System.out.println("Reversed List:");
-        for (int number : numbers) {
-            System.out.print(number + " ");
+        for (int i = 0; i < numbers.length; i++) {
+            System.out.print(numbers[i] + " ");
         }
     }
 
@@ -123,8 +123,8 @@ public class Chapter07 {
     private static byte countBelowAverage(long[] numbers) {
         long average = computeAverage(numbers);
         byte count = 0;
-        for (long number : numbers) {
-            if (number < average) {
+        for (int i = 0; i < numbers.length; i++) {
+            if (numbers[i] < average) {
                 count++;
             }
         }
@@ -137,8 +137,8 @@ public class Chapter07 {
 
     private static long sum(long[] numbers) {
         long sum = 0;
-        for (long number : numbers) {
-            sum += number;
+        for (int i = 0; i < numbers.length; i++) {
+            sum += numbers[i];
         }
         return sum;
     }
