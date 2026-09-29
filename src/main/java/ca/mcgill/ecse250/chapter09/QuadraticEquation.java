@@ -1,5 +1,7 @@
 package ca.mcgill.ecse250.chapter09;
 
+import java.util.Scanner;
+
 public class QuadraticEquation {
     private double a;
     private double b;
@@ -25,5 +27,18 @@ public class QuadraticEquation {
             return 0;
         }
         return ( - b - Math.pow(getDiscriminant(), 0.5) ) / (2 * a);
+    }
+
+    // extra method for better scalability
+    public static QuadraticEquation requestEquation(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("A= ");
+        double a = scanner.nextDouble();
+        System.out.print("B= ");
+        double b = scanner.nextDouble();
+        System.out.print("C= ");
+        double c = scanner.nextDouble();
+        return new QuadraticEquation(a,b,c);
+
     }
 }

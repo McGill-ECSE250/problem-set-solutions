@@ -1,5 +1,6 @@
 package ca.mcgill.ecse250.chapter09;
 
+
 import java.util.Date;
 
 public class Account {
@@ -63,5 +64,9 @@ public class Account {
                 ", annualInterestRate=" + annualInterestRate +
                 ", dateCreated=" + dateCreated +
                 '}';
+    }
+
+    public Date getDateCreated() {
+        return this.dateCreated;
     }
 }
