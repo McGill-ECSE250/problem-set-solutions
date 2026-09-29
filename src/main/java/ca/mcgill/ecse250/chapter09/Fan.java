@@ -1,21 +1,21 @@
 package ca.mcgill.ecse250.chapter09;
 
 public class Fan {
-    private static final byte SLOW = 1;
-    private static final byte MEDIUM = 2;
-    private static final byte FAST = 3;
+    public static final byte SLOW = 1;
+    public static final byte MEDIUM = 2;
+    public static final byte FAST = 3;
     private int speed = SLOW;
     private boolean on = false;
     private double radius = 5.0;
     private String color = "blue";
+
 
     @Override
     public String toString() {
         return on ? "Description of fan:" +
                 "speed=" + speed +
                 ", radius=" + radius +
-                ", color='" + color + '\'' +
-                '}'
+                ", color=" + color
                 : "fan is off";
     }
 

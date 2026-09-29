@@ -44,6 +44,11 @@ public class MyDate {
         day = date.get(Calendar.DAY_OF_MONTH);
     }
 
+    @Override
+    public String toString() {
+        return this.year + "-" + this.month + "-" + this.day;
+    }
+
 
 
 
