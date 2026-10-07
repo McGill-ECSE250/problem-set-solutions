@@ -290,6 +290,7 @@ public class Chapter07 {
         return a;
     }
 
+    // Chapter 18
     private static int gcdBetweenRec(int a, int b) {
         return b == 0 ? a : gcdBetweenRec(b, a % b);
     }

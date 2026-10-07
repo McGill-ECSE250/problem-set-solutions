@@ -30,6 +30,10 @@ public class Chapter18 {
     static void exercise_18_03() {
 
     }
+    //compare with Chapter 7's for loop method: which one is more elegant? which one is more performant?
+    private static int gcdBetweenRec(int a, int b) {
+        return b == 0 ? a : gcdBetweenRec(b, a % b);
+    }
 
     static void exercise_18_05() {
 
