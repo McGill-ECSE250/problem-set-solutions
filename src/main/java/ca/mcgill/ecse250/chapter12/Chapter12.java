@@ -47,7 +47,7 @@ public class Chapter12 {
     }
 
     private static void evaluateInteger(int[] numbers) {
-        try{
+        try {
             byte index = inputScanner.nextByte();
             int value = numbers[index];
             System.out.println("the number at index " + index + " is " + value);
@@ -56,7 +56,7 @@ public class Chapter12 {
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Out of Bounds");
 
-        }catch (Exception e){
+        } catch (Exception e){
             System.out.println("Unknown error caught!");
         }
     }
@@ -106,6 +106,34 @@ public class Chapter12 {
                         result += (foundDecimalPoint) ? Math.pow(2, (decimalPointIndex) - i) : Math.pow(2, (decimalPointIndex - 1) - i);
                     }
 
+                    break;
+                default:
+                    throw new NumberFormatException();
+            }
+        }
+        return result;
+    }
+    private static double bin2Dec2ndSolution(String binaryString) throws NumberFormatException {
+        double result = 0.0;
+
+        boolean foundDecimalPoint = false; // make sure only one point is there
+        int binaryStringLength = binaryString.length();
+        //if does not contain a decimal point, then we can assume that the decimal point is actually at the end,
+        // which will make it behave exactly the same as without
+        int decimalPointIndex = binaryString.contains(".") ? binaryString.indexOf(".") : binaryStringLength;
+        for (int i = 0; i < binaryStringLength; i++){
+            char ch = binaryString.charAt(i);
+            switch(ch){
+                case '.':
+                    if (foundDecimalPoint){
+                        throw new NumberFormatException();
+                    }
+                    foundDecimalPoint = true;
+                    break;
+                case '0':
+                    break;
+                case '1':
+                    result += (foundDecimalPoint) ? Math.pow(2, (decimalPointIndex) - i) : Math.pow(2, (decimalPointIndex - 1) - i);
                     break;
                 default:
                     throw new NumberFormatException();
