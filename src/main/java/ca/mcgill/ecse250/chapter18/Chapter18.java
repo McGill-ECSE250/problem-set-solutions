@@ -1,16 +1,31 @@
 package ca.mcgill.ecse250.chapter18;
 
+import java.math.BigInteger;
+import java.util.Scanner;
+
 /**
  * CHAPTER 18: RECURSION
  */
 public class Chapter18 {
 
+    private static final Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {
     }
 
     static void exercise_18_01() {
-
+        System.out.println("Input an integer: ");
+        int number = inputScanner.nextInt();
+        System.out.printf("!%d = %s", number, factorial(number));
     }
+
+    private static BigInteger factorial(int number) {
+        if (number <= 1) {
+            return BigInteger.ONE;
+        } else {
+            return BigInteger.valueOf(number).multiply(factorial(number - 1));
+        }
+    }
+
 
     static void exercise_18_03() {
 
