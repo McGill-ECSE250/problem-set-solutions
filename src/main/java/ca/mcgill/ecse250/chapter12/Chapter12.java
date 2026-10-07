@@ -19,7 +19,7 @@ public class Chapter12 {
     }
 
     private static boolean evaluateAnswer(double expectedResult) {
-        try{
+        try {
             double answer = inputScanner.nextDouble();
             if (answer == expectedResult) {
                 System.out.println("You guessed the correct result!");
