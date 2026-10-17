@@ -23,8 +23,6 @@ public class Chapter21 {
         }
         System.out.println("The list of numbers that have the most occurrences in the given list of numbers is "
                 + (mostOccurrencesOfNumber(numbers)));
-
-
     }
 
 
