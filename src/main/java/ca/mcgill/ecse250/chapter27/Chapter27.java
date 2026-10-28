@@ -13,6 +13,18 @@ public class Chapter27 {
     }
 
     static void exercise_27_09() {
-
+        System.out.println("hashCodeForString(hashcode) =" + hashCodeForString("hashcode"));
     }
+
+
+    private final static byte b = 31;
+    public static int hashCodeForString(String s){
+        int hashCode = 0;
+        for(int i = 0; i < s.length() - 1; i++){
+            hashCode += s.charAt(i);
+            hashCode *= b;
+        }
+        return hashCode + s.charAt(s.length() - 1);
+    }
+
 }
