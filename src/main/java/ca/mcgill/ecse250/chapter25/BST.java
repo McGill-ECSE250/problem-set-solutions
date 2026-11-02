@@ -1,18 +1,22 @@
 package ca.mcgill.ecse250.chapter25;
 
-import java.util.LinkedList;
-import java.util.Queue;
+import com.sun.source.tree.Tree;
 
-public class BST<E extends Comparable<E>> {
+import java.nio.file.Path;
+import java.util.*;
+
+public class BST<E> {
     protected TreeNode<E> root;
     protected int size = 0;
-
+    protected Comparator<? super E> comparator;
     /** Create a default binary search tree */
-    public BST() {
+    public BST(Comparator<? super E> comparator) {
+        this.comparator = comparator;
     }
 
     /** Create a binary search tree from an array of objects */
-    public BST(E[] objects) {
+    public BST(E[] objects, Comparator<? super E> comparator) {
+        this.comparator = comparator;
         for (int i = 0; i < objects.length; i++)
             insert(objects[i]);
     }
@@ -22,10 +26,10 @@ public class BST<E extends Comparable<E>> {
         TreeNode<E> current = root; // Start from the root
 
         while (current != null) {
-            if (e.compareTo(current.element) < 0) {
+            if (comparator.compare(e, current.element) < 0) {
                 current = current.left;
             }
-            else if (e.compareTo(current.element) > 0) {
+            else if (comparator.compare(e, current.element) > 0) {
                 current = current.right;
             }
             else // element matches current.element
@@ -45,11 +49,11 @@ public class BST<E extends Comparable<E>> {
             TreeNode<E> parent = null;
             TreeNode<E> current = root;
             while (current != null)
-                if (e.compareTo(current.element) < 0) {
+                if (comparator.compare(e, current.element) < 0) {
                     parent = current;
                     current = current.left;
                 }
-                else if (e.compareTo(current.element) > 0) {
+                else if (comparator.compare(e, current.element) > 0) {
                     parent = current;
                     current = current.right;
                 }
@@ -57,10 +61,12 @@ public class BST<E extends Comparable<E>> {
                     return false; // Duplicate node not inserted
 
             // Create the new node and attach it to the parent node
-            if (e.compareTo(parent.element) < 0)
-                parent.left = createNewNode(e);
-            else
-                parent.right = createNewNode(e);
+            if (comparator.compare(e, parent.element) < 0) {
+                parent.left = createNewNodeWithParent(e, parent);
+            } else{
+                parent.right = createNewNodeWithParent(e, parent);
+            }
+
         }
 
         size++;
@@ -69,6 +75,11 @@ public class BST<E extends Comparable<E>> {
 
     protected TreeNode<E> createNewNode(E e) {
         return new TreeNode<>(e);
+    }
+    protected TreeNode<E> createNewNodeWithParent(E e, TreeNode<E> parent) {
+        TreeNode<E> returnedNode = new TreeNode<>(e);
+        returnedNode.parent = parent;
+        return returnedNode;
     }
 
      /** Inorder traversal from the root */
@@ -112,11 +123,11 @@ public class BST<E extends Comparable<E>> {
 
     /** This inner class is static, because it does not access
      any instance members defined in its outer class */
-    public static class TreeNode<E extends Comparable<E>> {
+    public static class TreeNode<E> {
         protected E element;
         protected TreeNode<E> left;
         protected TreeNode<E> right;
-
+        protected TreeNode<E> parent;
         public TreeNode(E e) {
             element = e;
         }
@@ -147,6 +158,18 @@ public class BST<E extends Comparable<E>> {
             }
             System.out.println();
         }
+
+        /** Returns the number of leaf nodes from this node*/
+        public int getNumberOfLeaves() {
+            if(this.left == null && this.right == null){
+                return 1;
+            } else if(this.left == null){
+                return this.right.getNumberOfLeaves();
+            } else if(this.right == null){
+                return this.left.getNumberOfLeaves();
+            }
+            return this.right.getNumberOfLeaves() + this.left.getNumberOfLeaves();
+        }
     }
 
      /** Get the number of nodes in the tree */
@@ -166,10 +189,10 @@ public class BST<E extends Comparable<E>> {
 
         while (current != null) {
             list.add(current); // Add the node to the list
-            if (e.compareTo(current.element) < 0) {
+            if (comparator.compare(e, current.element) < 0) {
                 current = current.left;
             }
-            else if (e.compareTo(current.element) > 0) {
+            else if (comparator.compare(e, current.element) > 0) {
                 current = current.right;
             }
             else
@@ -179,7 +202,8 @@ public class BST<E extends Comparable<E>> {
         return list; // Return an array list of nodes
     }
 
-     /** Delete an element from the binary search tree.
+     /**
+      *  an element from the binary search tree.
      * Return true if the element is deleted successfully.
      * Return false if the element is not in the tree. */
     public boolean delete(E e) {
@@ -187,11 +211,11 @@ public class BST<E extends Comparable<E>> {
         TreeNode<E> parent = null;
         TreeNode<E> current = root;
         while (current != null) {
-            if (e.compareTo(current.element) < 0) {
+            if (comparator.compare(e, current.element) < 0) {
                 parent = current;
                 current = current.left;
             }
-            else if (e.compareTo(current.element) > 0) {
+            else if (comparator.compare(e, current.element) > 0) {
                 parent = current;
                 current = current.right;
             }
@@ -209,10 +233,14 @@ public class BST<E extends Comparable<E>> {
                 root = current.right;
             }
             else {
-                if (e.compareTo(parent.element) < 0)
+                if (comparator.compare(e, parent.element) < 0) {
                     parent.left = current.right;
-                else
+                    parent.left.parent = parent;
+                }
+                else {
                     parent.right = current.right;
+                    parent.right.parent = parent;
+                }
             }
         }
         else {
@@ -231,11 +259,19 @@ public class BST<E extends Comparable<E>> {
             current.element = rightMost.element;
 
             // Eliminate rightmost node
-            if (parentOfRightMost.right == rightMost)
+            if (parentOfRightMost.right == rightMost){
                 parentOfRightMost.right = rightMost.left;
-            else
+                if (parentOfRightMost.right != null) {
+                    parentOfRightMost.right.parent = parentOfRightMost;
+                }
+            }
+            else {
                 // Special case: parentOfRightMost == current
                 parentOfRightMost.left = rightMost.left;
+                if (parentOfRightMost.left != null){
+                    parentOfRightMost.left.parent = parentOfRightMost;
+                }
+            }
         }
 
         size--;
@@ -251,9 +287,114 @@ public class BST<E extends Comparable<E>> {
     public void breadthFirstTraversal(){
         root.breathFirstTraversal();
     }
+
+    /** Returns true if the tree is a full binary tree */
+    boolean isFullBST(){
+        return getSize() == Math.pow(2, height() + 1) - 1;
+    }
+    /** Returns the number of leaf nodes */
+    public int getNumberOfLeaves(){
+        return root.getNumberOfLeaves();
+    }
+    @Override
+    public BST<E> clone(){
+        BST<E> returnedBST = new BST<>(comparator);
+        TreeNode<E> current = root;
+        Queue<TreeNode<E>> queue = new LinkedList<>();
+        queue.add(current);
+        while (!queue.isEmpty()) {
+            current = queue.poll();
+            returnedBST.insert(current.element);
+            if (current.left != null) {
+                queue.add(current.left);
+            }
+            if (current.right != null) {
+                queue.add(current.right);
+            }
+        }
+        return returnedBST;
+    }
+    public boolean equals(BST<E> other){
+        Queue<TreeNode<E>> queueThis = new LinkedList<>();
+        Queue<TreeNode<E>> queueOther = new LinkedList<>();
+        TreeNode<E> currentThis = root;
+        TreeNode<E> currentOther = other.root;
+        queueThis.add(currentThis);
+        queueOther.add(currentOther);
+        while (!queueThis.isEmpty() && !queueOther.isEmpty()) {
+            currentThis = queueThis.poll();
+            currentOther = queueOther.poll();
+            if (!currentThis.element.equals(currentOther.element)) {
+                return false;
+            }
+            if (currentThis.left != null) {
+                queueThis.add(currentThis.left);
+            }
+            if (currentThis.right != null) {
+                queueThis.add(currentThis.right);
+            }
+            if (currentOther.left != null) {
+                queueOther.add(currentOther.left);
+            }
+            if (currentOther.right != null) {
+                queueOther.add(currentOther.right);
+            }
+        }
+        // if one is still non empty then they are not equal
+        return queueThis.isEmpty() == queueOther.isEmpty();
+    }
+    /** Returns the number of nonleaf nodes */
+    public int getNumberofNonLeaves(){
+        return getSize() - root.getNumberOfLeaves();
+    }
     /** Returns the height of this binary tree */
     public int height(){
         return root.height();
+    }
+    /** Returns the node for the specified element.
+     * Returns null if the element is not in the tree. */
+    public TreeNode<E> getNode(E element){
+        TreeNode<E> current = root;
+        while (current != null) {
+            if (current.element.equals(element)) {
+                return current;
+            }
+            else if (comparator.compare(element, current.element) < 0) {
+                current = current.left;
+            } else{
+                current = current.right;
+            }
+        }
+        return null;
+    }
+    /** Returns true if the node for the element is a leaf */
+    public boolean isLeaf(E element){
+        TreeNode<E> node = getNode(element);
+        return node == null || (node.left == null && node.right == null);
+    }
+    /** Returns the path of elements from the specified element
+     * to the root in an array list. */
+    public ArrayList<E> getPath(E e){
+        Stack<E> stack = new Stack<>();
+        TreeNode<E> current = root;
+        while (current != null) {
+            stack.add(current.element);
+            if (current.element.equals(e)) {
+                break;
+            } else if (comparator.compare(e, current.element) < 0) {
+                current = current.left;
+            } else {
+                current = current.right;
+            }
+        }
+        if (current == null) {
+            return null;
+        }
+        ArrayList<E> path = new ArrayList<>();
+        while (!stack.isEmpty()) {
+            path.add(stack.pop());
+        }
+        return path; // no element means no path found
     }
     // Inner class InorderIterator
     private class InorderIterator implements java.util.Iterator<E> {
