@@ -3,6 +3,9 @@ package ca.mcgill.ecse250.chapter09;
 import java.util.Date;
 import java.util.Scanner;
 
+/**
+ * CHAPTER 9: OBJECTS AND CLASSES
+ */
 public class Chapter09 {
     private static final Scanner inputScanner = new Scanner(System.in);
 

@@ -5,6 +5,9 @@ import ca.mcgill.ecse250.chapter09.Account;
 import java.sql.SQLOutput;
 import java.util.Scanner;
 
+/**
+ * CHAPTER 10: OBJECT-ORIENTED THINKING
+ */
 public class Chapter10 {
     private static final Scanner inputScanner = new Scanner(System.in);
     public static void main(String[] args) {

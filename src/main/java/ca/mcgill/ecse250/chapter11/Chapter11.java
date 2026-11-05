@@ -7,6 +7,9 @@ import ca.mcgill.ecse250.chapter11.exercise3.CheckingAccount;
 import ca.mcgill.ecse250.chapter11.exercise3.SavingsAccount;
 import ca.mcgill.ecse250.chapter11.exercise8.NewAccount;
 
+/**
+ * CHAPTER 11: INHERITANCE AND POLYMORPHISM
+ */
 public class Chapter11 {
 
     public static void main(String[] args) {

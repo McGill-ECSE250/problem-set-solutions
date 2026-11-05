@@ -4,6 +4,9 @@ import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * CHAPTER 12: EXCEPTION HANDLING AND TEXT I/O
+ */
 public class Chapter12 {
 
     private static final Scanner inputScanner = new Scanner(System.in);
