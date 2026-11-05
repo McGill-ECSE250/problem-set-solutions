@@ -44,7 +44,11 @@ public class Chapter18 {
 
     // compare with Chapter 7's for loop method: which one is more elegant? which one is more performant?
     private static int gcd(int a, int b) {
-        return b % a == 0 ? a : gcd(b, a % b);
+        if (b % a == 0) {
+            return a;
+        } else {
+            return gcd(b, a % b);
+        }
     }
 
     private static final byte I_UP_TO_18_5 = 10;
