@@ -8,7 +8,6 @@ import ca.mcgill.ecse250.chapter06.Chapter06;
 public class Chapter24 {
 
     public static void main(String[] args) {
-        exercise_24_03();
     }
 
     static void exercise_24_01() {
@@ -33,7 +32,6 @@ public class Chapter24 {
         list1.retainAll(list2);
         System.out.println("List2: "+ list2);
         System.out.println("List1: "+ list1);
-
     }
 
 
@@ -69,13 +67,8 @@ public class Chapter24 {
             System.out.println(it.next());
         }
         System.out.println("_____________________________________");
-        while (it2.hasNext()) {
-            System.out.println(it2.next());
-        }
-
-        System.out.println("_____________________________________");
-        while (it2.hasNext()) {
-            System.out.println(it2.next());
+        while (it2.hasPrevious()) {
+            System.out.println(it2.previous());
         }
 
     }

@@ -161,12 +161,13 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
     @Override /** Return true if this list contains the element e */
     public boolean contains(E e) {
         Node<E> tmp = head;
-        do {
+        // Solution without iterator(), rest will be covered using iterator()
+        while(tmp != null) {
             if(tmp.element.equals(e)){
                 return true;
             }
             tmp = tmp.next;
-        } while(tmp.next != null);
+        }
         return false;
     }
 
@@ -174,13 +175,24 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
     public E get(int index) {
         var it = iterator();
         int i = 0;
-        do {
+        while(it.hasNext()) {
             if (i == index) {
                 return it.next();
             }
+            it.next();
             i++;
+        }
 
-        } while(it.hasNext());
+        /*
+        We can also use the java.util.Iterator<E> condition to create a for each loop
+        e.g.
+        for(E e : this){
+            if (i++ == index) {
+                return e;
+            }
+        }
+        However, since it is not covered in class, the solutions will be presented using while/do while loops as much as possible.
+        */
         return null;
     }
 
@@ -189,13 +201,13 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
     public int indexOf(E e) {
         var it = iterator();
         int i = 0;
-        do {
+        while(it.hasNext()) {
             if (it.next().equals(e)) {
                 return i;
             }
             i++;
 
-        } while(it.hasNext());
+        }
         return -1;
     }
 
@@ -205,27 +217,28 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
         var it = iterator();
         int lastIndex = -1;
         int i = 0;
-        do {
+        while(it.hasNext()){
             if (it.next().equals(e)) {
                 lastIndex = i;
             }
             i++;
 
-        } while(it.hasNext());
+        }
         return lastIndex;
     }
 
     @Override /** Replace the element at the specified position
      * in this list with the specified element. */
     public E set(int index, E e) {
+        if (index < 0 || index >= size) return null;
         Node<E> tmp = head;
         int i = 0;
-        do {
+        while (tmp != null) {
             if(i == index) {
                 tmp.element = e;
             }
             tmp = tmp.next;
-        } while(tmp.next != null);
+        }
         return e;
     }
 

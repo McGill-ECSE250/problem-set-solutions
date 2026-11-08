@@ -41,7 +41,9 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     public void addFirst(E e) {
         Node<E> newNode = new Node<>(e); // Create a new node
         newNode.next = head; // link the new node with the head
+        head.previous = newNode;
         head = newNode; // head points to the new node
+
         size++; // Increase list size
 
         if (tail == null) // The new node is the only node in list
@@ -57,6 +59,7 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
         }
         else {
             tail.next = newNode; // Link the new node with the last node
+            newNode.previous = tail;
             tail = tail.next; // tail now points to the last node
         }
 
@@ -76,12 +79,12 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
         }
         else if (index >= size) addLast(e); // Insert last
         else { // Insert in the middle
-            Node<E> current = head;
-            for (int i = 1; i < index; i++)
-                current = current.next;
+            Node<E> current = getNode(index);
             Node<E> temp = current.next;
             current.next = new Node<E>(e);
+            current.next.previous = current;
             (current.next).next = temp;
+            temp.previous = current.next;
             size++;
         }
     }
@@ -95,6 +98,7 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
             head = head.next; // Move head to point to next node
             size--; // Reduce size by 1
             if (head == null) tail = null; // List becomes empty
+            else head.previous = null;
             return temp.element; // Return the deleted element
         }
     }
@@ -111,14 +115,11 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
             return temp.element;
         }
         else {
-            Node<E> current = head;
-
-            for (int i = 0; i < size - 2; i++)
-                current = current.next;
 
             Node<E> temp = tail;
-            tail = current;
+            tail = tail.previous;
             tail.next = null;
+            temp.previous = null; // in case we for some reason have the removed tail referenced again
             size--;
             return temp.element;
         }
@@ -132,17 +133,26 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
         else if (index == 0) return removeFirst(); // Remove first
         else if (index == size - 1) return removeLast(); // Remove last
         else {
-            Node<E> previous = head;
-
-            for (int i = 1; i < index; i++) {
-                previous = previous.next;
-            }
-
+            Node<E> previous = getNode(index);
             Node<E> current = previous.next;
             previous.next = current.next;
             size--;
             return current.element;
         }
+    }
+
+    private Node<E> getNode(int index) {
+        Node<E> current;
+        if (size / 2 < index) {
+            current = head;
+            for (int i = 1; i < index; i++)
+                current = current.next;
+        } else {
+            current = tail;
+            for (int i = 1; i < (size - index); i++)
+                current = current.previous;
+        }
+        return current;
     }
 
     @Override
@@ -173,13 +183,12 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     @Override
      /** Return true if this list contains the element e */
     public boolean contains(Object e) {
-        Node<E> tmp = head;
-        do {
-            if(tmp.element.equals(e)){
+        var it = iterator();
+        while(it.hasNext()) {
+            if(it.next().equals(e)){
                 return true;
             }
-            tmp = tmp.next;
-        } while(tmp.next != null);
+        }
         return false;
     }
 
@@ -187,13 +196,13 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     public E get(int index) {
         var it = iterator();
         int i = 0;
-        do {
+        while(it.hasNext()){
             if (i == index) {
                 return it.next();
             }
+            it.next();
             i++;
-
-        } while(it.hasNext());
+        }
         return null;
     }
 
@@ -202,13 +211,13 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     public int indexOf(Object e) {
         var it = iterator();
         int i = 0;
-        do {
+        while(it.hasNext()) {
             if (it.next().equals(e)) {
                 return i;
             }
             i++;
 
-        } while(it.hasNext());
+        }
         return -1;
     }
 
@@ -218,13 +227,13 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
         var it = iterator();
         int lastIndex = -1;
         int i = 0;
-        do {
+        while(it.hasNext()) {
             if (it.next().equals(e)) {
                 lastIndex = i;
             }
             i++;
 
-        } while(it.hasNext());
+        }
         return lastIndex;
     }
 
@@ -233,12 +242,12 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     public E set(int index, E e) {
         Node<E> tmp = head;
         int i = 0;
-        do {
+        while(tmp != null) {
             if(i == index) {
                 tmp.element = e;
             }
             tmp = tmp.next;
-        } while(tmp.next != null);
+        };
         return e;
     }
 
@@ -287,13 +296,15 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
 
         @Override
         public boolean hasPrevious() {
-            return current.previous != null;
+            return (current != null);
         }
 
         @Override
         public E previous() {
-
-            return current != null && current.previous != null ? current.previous.element : null;
+            E e = current.element;
+            current = current.previous;
+            index--;
+            return e;
         }
 
         @Override
