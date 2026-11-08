@@ -223,7 +223,7 @@ public class Chapter06 {
         return primeList;
     }
 
-    private static boolean isPrime(int n) {
+    public static boolean isPrime(int n) {
         int n_sqrt = (int) Math.sqrt(n);
         for (int i = 2; i <= n_sqrt; i++) {
             if (n % i == 0) {
