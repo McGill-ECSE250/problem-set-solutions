@@ -63,6 +63,11 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
         size++; // Increase size
     }
 
+    @Override
+    public boolean add(E e){
+        addLast(e);
+        return true;
+    }
     @Override /** Add a new element at the specified index
      * in this list. The index of the head element is 0 */
     public void add(int index, E e) {
@@ -238,7 +243,7 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     }
 
     @Override /** Override iterator() defined in Iterable */
-    public java.util.Iterator<E> iterator() {
+    public java.util.ListIterator<E> iterator() {
         return new TwoWayLinkedListIterator();
     }
 
@@ -248,13 +253,25 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     }
 
     @Override
-    public ListIterator listIterator(int index) {
-        return null;
+    public java.util.ListIterator<E> listIterator(int index) {
+        return new TwoWayLinkedListIterator(index);
     }
 
-    private class TwoWayLinkedListIterator implements java.util.Iterator<E> {
+    private class TwoWayLinkedListIterator implements java.util.ListIterator<E> {
         private Node<E> current = head; // Current index
+        private int index = 0;
 
+        public TwoWayLinkedListIterator(){
+
+        }
+
+        public TwoWayLinkedListIterator(int index){
+            this.index = index;
+            while (current.next != null && index > 0){
+                current = current.next;
+                index--;
+            }
+        }
         @Override
         public boolean hasNext() {
             return (current != null);
@@ -264,16 +281,63 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
         public E next() {
             E e = current.element;
             current = current.next;
+            index++;
             return e;
         }
 
         @Override
+        public boolean hasPrevious() {
+            return current.previous != null;
+        }
+
+        @Override
+        public E previous() {
+
+            return current != null && current.previous != null ? current.previous.element : null;
+        }
+
+        @Override
+        public int nextIndex() {
+            return index + 1;
+        }
+
+        @Override
+        public int previousIndex() {
+            return index - 1;
+        }
+
+        @Override
         public void remove() {
+            if (current == null) return;
             var tmp = current.previous;
             current = current.next;
             current.previous = tmp;
+            if (current.previous != null) {
             current.previous.next = current;
+            }
             size--;
+        }
+
+        @Override
+        public void set(E e) {
+            current.element = e;
+        }
+
+        @Override
+        public void add(E e) {
+            Node<E> newNode = new Node<>(e);
+            if(current == null) {
+                current = newNode;
+                return;
+            }
+            Node<E> tmp = current.previous;
+            current.previous = newNode;
+            current.previous.next = current;
+            if (tmp != null) {
+                tmp.next = newNode;
+                newNode.previous = tmp;
+            }
+            size++;
         }
     }
 

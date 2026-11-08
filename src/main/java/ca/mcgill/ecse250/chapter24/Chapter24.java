@@ -8,6 +8,7 @@ import ca.mcgill.ecse250.chapter06.Chapter06;
 public class Chapter24 {
 
     public static void main(String[] args) {
+        exercise_24_03();
     }
 
     static void exercise_24_01() {
@@ -52,6 +53,30 @@ public class Chapter24 {
     }
 
     static void exercise_24_03() {
+        TwoWayLinkedList<String> list1 = new TwoWayLinkedList<>();
+        list1.add("Tom");
+        list1.add("George");
+        list1.add("Peter");
+        list1.add("Jean");
+        list1.add("Jane");
+        list1.add("Michael");
+        list1.add("Michelle");
+        list1.add("Daniel");
+        java.util.ListIterator<String> it = list1.iterator();
+        java.util.ListIterator<String> it2 = list1.listIterator(2);
+        it2.add("new Node");
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
+        System.out.println("_____________________________________");
+        while (it2.hasNext()) {
+            System.out.println(it2.next());
+        }
+
+        System.out.println("_____________________________________");
+        while (it2.hasNext()) {
+            System.out.println(it2.next());
+        }
 
     }
 
