@@ -1,6 +1,7 @@
 package ca.mcgill.ecse250.chapter24;
 
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     private Node<E> head, tail;
@@ -40,9 +41,13 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     /** Add an element to the beginning of the list */
     public void addFirst(E e) {
         Node<E> newNode = new Node<>(e); // Create a new node
-        newNode.next = head; // link the new node with the head
-        head.previous = newNode;
-        head = newNode; // head points to the new node
+        if (size == 0) {
+            head = newNode;
+        } else {
+            newNode.next = head; // link the new node with the head
+            head.previous = newNode;
+            head = newNode; // head points to the new node
+        }
 
         size++; // Increase list size
 
@@ -74,19 +79,36 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     @Override /** Add a new element at the specified index
      * in this list. The index of the head element is 0 */
     public void add(int index, E e) {
+        validateCursorPosition(index);
         if (index == 0) {
             addFirst(e); // Insert first
-        }
-        else if (index >= size) addLast(e); // Insert last
-        else { // Insert in the middle
+        } else if (index == size){
+            addLast(e); // Insert last
+        } else { // Insert in the middle
             Node<E> current = getNode(index);
-            Node<E> temp = current.next;
-            current.next = new Node<E>(e);
-            current.next.previous = current;
-            (current.next).next = temp;
-            temp.previous = current.next;
+            Node<E> temp = current.previous;
+            current.previous = new Node<E>(e);
+            current.previous.next = current;
+            (current.previous).previous = temp;
+            temp.next = current.previous;
             size++;
         }
+    }
+
+    private void validateIndex(int index) {
+        if (!isIndexInBound(index)) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+    private void validateCursorPosition(int pos){
+        if (!isCursorInBound(pos)) throw new IndexOutOfBoundsException();
+    }
+
+    private boolean isCursorInBound(int pos) {
+        return pos >= 0 && pos <= size;
+    }
+    private boolean isIndexInBound(int index) {
+        return index >= 0 && index < size;
     }
 
     /** Remove the head node and
@@ -129,27 +151,33 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     @Override /** Remove the element at the specified position in this
      * list. Return the element that was removed from the list. */
     public E remove(int index) {
-        if (index < 0 || index >= size) return null; // Out of range
-        else if (index == 0) return removeFirst(); // Remove first
+        validateIndex(index);
+        if (index == 0) return removeFirst(); // Remove first
         else if (index == size - 1) return removeLast(); // Remove last
         else {
-            Node<E> previous = getNode(index);
-            Node<E> current = previous.next;
-            previous.next = current.next;
+            Node<E> current = getNode(index);
+            current.previous.next = current.next;
+            current.next.previous = current.previous;
+
+            //removing links just in case we reference it again somewhere
+            current.previous = null;
+            current.next = null;
+
             size--;
             return current.element;
         }
     }
 
     private Node<E> getNode(int index) {
+        validateIndex(index);
         Node<E> current;
         if (size / 2 < index) {
             current = head;
-            for (int i = 1; i < index; i++)
+            for (int i = 0; i < index; i++)
                 current = current.next;
         } else {
             current = tail;
-            for (int i = 1; i < (size - index); i++)
+            for (int i = 0; i < (size - index - 1); i++)
                 current = current.previous;
         }
         return current;
@@ -183,40 +211,26 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     @Override
      /** Return true if this list contains the element e */
     public boolean contains(Object e) {
-        var it = iterator();
-        while(it.hasNext()) {
-            if(it.next().equals(e)){
-                return true;
-            }
-        }
-        return false;
+        return indexOf(e) != -1;
     }
 
     @Override /** Return the element at the specified index */
     public E get(int index) {
-        var it = iterator();
-        int i = 0;
-        while(it.hasNext()){
-            if (i == index) {
-                return it.next();
-            }
-            it.next();
-            i++;
-        }
-        return null;
+        Node<E> node = getNode(index);
+        return node != null ? node.element : null;
     }
 
     @Override /** Return the index of the head matching element
      * in this list. Return -1 if no match. */
     public int indexOf(Object e) {
-        var it = iterator();
+        ListIterator<E> it = iterator();
         int i = 0;
         while(it.hasNext()) {
-            if (it.next().equals(e)) {
+            E element = it.next();
+            if ((e == null && element == null) || element.equals(e)) {
                 return i;
             }
             i++;
-
         }
         return -1;
     }
@@ -224,14 +238,15 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     @Override /** Return the index of the last matching element
      * in this list. Return -1 if no match. */
     public int lastIndexOf(Object e) {
-        var it = iterator();
+        int i = size - 1;
+        ListIterator<E> it = listIterator(size);
         int lastIndex = -1;
-        int i = 0;
-        while(it.hasNext()) {
-            if (it.next().equals(e)) {
+        while(it.hasPrevious()) {
+            E element = it.previous();
+            if ((e == null && element == null) || element.equals(e)) {
                 lastIndex = i;
             }
-            i++;
+            i--;
 
         }
         return lastIndex;
@@ -240,15 +255,10 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
     @Override /** Replace the element at the specified position
      * in this list with the specified element. */
     public E set(int index, E e) {
-        Node<E> tmp = head;
-        int i = 0;
-        while(tmp != null) {
-            if(i == index) {
-                tmp.element = e;
-            }
-            tmp = tmp.next;
-        };
-        return e;
+        Node<E> node = getNode(index);
+        E replacedElement = node.element;
+        node.element = e;
+        return replacedElement;
     }
 
     @Override /** Override iterator() defined in Iterable */
@@ -268,6 +278,7 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
 
     private class TwoWayLinkedListIterator implements java.util.ListIterator<E> {
         private Node<E> current = head; // Current index
+        private Node<E> returned = null;
         private int index = 0;
 
         public TwoWayLinkedListIterator(){
@@ -275,11 +286,13 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
         }
 
         public TwoWayLinkedListIterator(int index){
+            validateCursorPosition(index);
             this.index = index;
-            while (current.next != null && index > 0){
-                current = current.next;
-                index--;
+            if (index == size) {
+                current = null;
+                return;
             }
+            current = getNode(index);
         }
         @Override
         public boolean hasNext() {
@@ -288,7 +301,9 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
 
         @Override
         public E next() {
+            if (!hasNext()) throw new NoSuchElementException(); // According to java documentation of java.util.ListIterator<E>.next()
             E e = current.element;
+            returned = current;
             current = current.next;
             index++;
             return e;
@@ -296,20 +311,26 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
 
         @Override
         public boolean hasPrevious() {
-            return (current != null);
+            return (index > 0);
         }
 
         @Override
         public E previous() {
-            E e = current.element;
-            current = current.previous;
+            if (!hasPrevious()) throw new NoSuchElementException(); // According to java documentation of java.util.ListIterator<E>.previous()
+
+            if(current == null){
+                current = tail;
+            } else {
+                current = current.previous;
+            }
+            returned = current;
             index--;
-            return e;
+            return current.element;
         }
 
         @Override
         public int nextIndex() {
-            return index + 1;
+            return index;
         }
 
         @Override
@@ -319,36 +340,27 @@ public class TwoWayLinkedList<E> extends java.util.AbstractSequentialList<E> {
 
         @Override
         public void remove() {
-            if (current == null) return;
-            var tmp = current.previous;
-            current = current.next;
-            current.previous = tmp;
-            if (current.previous != null) {
-            current.previous.next = current;
+            if(returned == null) throw new IllegalStateException();
+            if (returned == current) {
+                TwoWayLinkedList.this.remove(index);
+            } else {
+                TwoWayLinkedList.this.remove(index - 1);
+                index--;
             }
-            size--;
+            returned = null;
         }
 
         @Override
         public void set(E e) {
-            current.element = e;
+            if(returned == null) throw new IllegalStateException();
+            returned.element = e;
         }
 
         @Override
         public void add(E e) {
-            Node<E> newNode = new Node<>(e);
-            if(current == null) {
-                current = newNode;
-                return;
-            }
-            Node<E> tmp = current.previous;
-            current.previous = newNode;
-            current.previous.next = current;
-            if (tmp != null) {
-                tmp.next = newNode;
-                newNode.previous = tmp;
-            }
-            size++;
+            TwoWayLinkedList.this.add(index, e);
+            returned = null;
+            index++;
         }
     }
 

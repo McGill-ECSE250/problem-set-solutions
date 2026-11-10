@@ -2,12 +2,15 @@ package ca.mcgill.ecse250.chapter24;
 
 import ca.mcgill.ecse250.chapter06.Chapter06;
 
+import java.util.ListIterator;
+
 /**
  * CHAPTER 24: IMPLEMENTING LISTS, STACKS, AND QUEUES
  */
 public class Chapter24 {
 
     public static void main(String[] args) {
+        test();
     }
 
     static void exercise_24_01() {
@@ -84,5 +87,32 @@ public class Chapter24 {
         for (int i = 0; i < primeStack.getSize(); i++) {
             System.out.println(primeStack.pop());
         }
+    }
+    static void test(){
+        TwoWayLinkedList<Integer> list =
+                new TwoWayLinkedList<>(new Integer[]{10, 20, 30});
+
+        ListIterator<Integer> it = list.listIterator(list.size());
+
+// Test previous from end
+        System.out.println(it.previous()); // 30
+
+// Test iterator removal
+        it.remove();
+
+        System.out.println(list); // [10, 20]
+
+// Test iterator insertion
+        it.add(25);
+
+        System.out.println(list); // [10, 20, 25]
+
+// Test next
+        System.out.println(it.next()); // 25
+
+// Test set
+        it.set(35);
+
+        System.out.println(list); // [10, 20, 35]
     }
 }
