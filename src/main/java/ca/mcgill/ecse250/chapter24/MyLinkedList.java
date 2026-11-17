@@ -1,5 +1,8 @@
 package ca.mcgill.ecse250.chapter24;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 public class MyLinkedList<E> extends MyAbstractList<E> {
     private Node<E> head, tail;
 
@@ -116,8 +119,8 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
     @Override /** Remove the element at the specified position in this
      * list. Return the element that was removed from the list. */
     public E remove(int index) {
-        if (index < 0 || index >= size) return null; // Out of range
-        else if (index == 0) return removeFirst(); // Remove first
+        validateIndex(index);
+        if (index == 0) return removeFirst(); // Remove first
         else if (index == size - 1) return removeLast(); // Remove last
         else {
             Node<E> previous = head;
@@ -160,29 +163,12 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 
     @Override /** Return true if this list contains the element e */
     public boolean contains(E e) {
-        Node<E> tmp = head;
-        // Solution without iterator(), rest will be covered using iterator()
-        while(tmp != null) {
-            if(tmp.element.equals(e)){
-                return true;
-            }
-            tmp = tmp.next;
-        }
-        return false;
+        return indexOf(e) != -1;
     }
 
     @Override /** Return the element at the specified index */
     public E get(int index) {
-        var it = iterator();
-        int i = 0;
-        while(it.hasNext()) {
-            if (i == index) {
-                return it.next();
-            }
-            it.next();
-            i++;
-        }
-
+        return getNode(index).element;
         /*
         We can also use the java.util.Iterator<E> condition to create a for each loop
         e.g.
@@ -191,22 +177,21 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
                 return e;
             }
         }
-        However, since it is not covered in class, the solutions will be presented using while/do while loops as much as possible.
+        However, since it is not covered in class, the solutions will be presented using while/do while loops as much as possible (see getNode helper).
         */
-        return null;
     }
 
     @Override /** Return the index of the head matching element
      * in this list. Return -1 if no match. */
     public int indexOf(E e) {
-        var it = iterator();
+        Iterator<E> it = iterator();
         int i = 0;
         while(it.hasNext()) {
-            if (it.next().equals(e)) {
+            E element = it.next();
+            if ((e == null && element == null) || element.equals(e)) {
                 return i;
             }
             i++;
-
         }
         return -1;
     }
@@ -218,7 +203,8 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
         int lastIndex = -1;
         int i = 0;
         while(it.hasNext()){
-            if (it.next().equals(e)) {
+            E element = it.next();
+            if ((e == null && element == null) || element.equals(e)) {
                 lastIndex = i;
             }
             i++;
@@ -230,16 +216,11 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
     @Override /** Replace the element at the specified position
      * in this list with the specified element. */
     public E set(int index, E e) {
-        if (index < 0 || index >= size) return null;
-        Node<E> tmp = head;
-        int i = 0;
-        while (tmp != null) {
-            if(i == index) {
-                tmp.element = e;
-            }
-            tmp = tmp.next;
-        }
-        return e;
+        validateIndex(index);
+        Node<E> node = getNode(index);
+        E replacedElement = node.element;
+        node.element = e;
+        return replacedElement;
     }
 
     @Override /** Override iterator() defined in Iterable */
@@ -249,7 +230,7 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
 
     private class LinkedListIterator implements java.util.Iterator<E> {
         private Node<E> current = head; // Current index
-
+        private int index = 0;
         @Override
         public boolean hasNext() {
             return (current != null);
@@ -259,12 +240,13 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
         public E next() {
             E e = current.element;
             current = current.next;
+            index++;
             return e;
         }
 
         @Override
         public void remove() {
-            current = current.next;
+            MyLinkedList.this.remove(index);
             size--;
         }
     }
@@ -280,6 +262,29 @@ public class MyLinkedList<E> extends MyAbstractList<E> {
             this.element = element;
         }
     }
+    private Node<E> getNode(int index) {
+        validateIndex(index);
+        Node<E> current;
+        current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
 
+        return current;
+    }
+    private void validateIndex(int index) {
+        if (!isIndexInBound(index)) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+    private void validateCursorPosition(int pos){
+        if (!isCursorInBound(pos)) throw new IndexOutOfBoundsException();
+    }
+    private boolean isCursorInBound(int pos) {
+        return pos >= 0 && pos <= size;
+    }
+    private boolean isIndexInBound(int index) {
+        return index >= 0 && index < size;
+    }
 
 }
